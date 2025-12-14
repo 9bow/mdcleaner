@@ -20,7 +20,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "vite": "^5.4.0",
-    "vitest": "^2.1.8"
+    "vite": "^7.2.7",
+    "vitest": "^4.0.15"
   }
 }

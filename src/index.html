@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Markdown Sanitizer - RichText를 Markdown으로 변환하고 한국어 띄어쓰기를 교정합니다">
+  <title>MDCleaner - Markdown 변환 및 교정 도구</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-top">
+        <div class="logo">
+          <div class="logo-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" rx="8" fill="url(#gradient)" />
+              <path d="M8 12h4l2 8 2-8h4" stroke="white" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M22 12v8" stroke="white" stroke-width="2" stroke-linecap="round" />
+              <path d="M20 16h4" stroke="white" stroke-width="2" stroke-linecap="round" />
+              <defs>
+                <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
+                  <stop stop-color="#6366f1" />
+                  <stop offset="1" stop-color="#8b5cf6" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <h1>MDCleaner</h1>
+        </div>
+        <div class="settings-container">
+          <button id="settings-btn" class="settings-btn" aria-label="설정">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+          </button>
+          <div id="settings-panel" class="settings-panel">
+            <!-- Theme Section -->
+            <div class="settings-section">
+              <div class="settings-section-title">테마</div>
+              <div class="theme-toggle">
+                <button id="theme-light" class="theme-option" data-theme="light">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5" />
+                    <path
+                      d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                  </svg>
+                  Light
+                </button>
+                <button id="theme-dark" class="theme-option active" data-theme="dark">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                  </svg>
+                  Dark
+                </button>
+              </div>
+            </div>
+
+            <div class="settings-divider"></div>
+
+            <!-- Auto Sanitize Section -->
+            <div class="settings-section">
+              <div class="settings-section-title">자동화</div>
+              <div class="settings-option">
+                <span class="settings-option-label">붙여넣기 시 자동 정리</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="opt-auto-sanitize" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="settings-divider"></div>
+
+            <!-- Sanitize Options Section -->
+            <div class="settings-section">
+              <div class="settings-section-title">정리 옵션</div>
+              <div class="settings-option">
+                <span class="settings-option-label">Google 검색 링크 제거</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="opt-remove-google-links" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="settings-option">
+                <span class="settings-option-label">이스케이프 문자 제거</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="opt-remove-escapes" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="settings-option">
+                <span class="settings-option-label">제목 번호 제거</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="opt-remove-heading-numbers" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="settings-option">
+                <span class="settings-option-label">HTML 태그 백틱 처리</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="opt-wrap-html-tags" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="settings-option">
+                <span class="settings-option-label">한국어 띄어쓰기 교정</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="opt-fix-korean-spacing" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="settings-option">
+                <span class="settings-option-label">Citation 제거</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="opt-remove-citations" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="settings-divider"></div>
+
+            <!-- Preview Section -->
+            <div class="settings-section">
+              <div class="settings-section-title">미리보기</div>
+              <div class="settings-option">
+                <span class="settings-option-label">미리보기 표시</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="opt-preview-enabled" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="settings-option">
+                <span class="settings-option-label">새로고침 주기</span>
+                <div class="segment-control" id="preview-refresh-mode">
+                  <button class="segment-option active" data-value="instant">바로 반영</button>
+                  <button class="segment-option" data-value="manual">수동</button>
+                </div>
+              </div>
+              <div class="settings-option">
+                <span class="settings-option-label">위치</span>
+                <div class="segment-control" id="preview-position">
+                  <button class="segment-option active" data-value="auto">자동</button>
+                  <button class="segment-option" data-value="bottom">아래</button>
+                  <button class="segment-option" data-value="right">오른쪽</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="tagline">RichText → Markdown 변환 & 한국어 띄어쓰기 교정</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Editor & Preview Container -->
+      <div class="editor-preview-container">
+        <!-- Editor Section -->
+        <section class="editor-section">
+          <div class="section-header">
+            <h2>
+              <span class="section-icon">📝</span>
+              입력
+            </h2>
+            <div class="actions">
+              <button id="sanitize-btn" class="btn btn-primary">
+                <span class="btn-icon">✨</span>
+                Sanitize
+              </button>
+              <button id="clear-btn" class="btn btn-secondary">
+                <span class="btn-icon">🗑️</span>
+                초기화
+              </button>
+            </div>
+          </div>
+          <div class="editor-wrapper">
+            <textarea id="editor" class="editor" placeholder="여기에 RichText를 붙여넣기 하거나 Markdown을 직접 입력하세요...
+
+💡 팁:
+• Google Docs, MS Word 등에서 서식 있는 텍스트를 복사하여 붙여넣기
+• 또는 Markdown 텍스트를 직접 입력
+• 'Sanitize' 버튼을 클릭하여 한국어 띄어쓰기 교정" spellcheck="false"></textarea>
+            <div class="editor-footer">
+              <span id="char-count" class="char-count">0자</span>
+              <span id="paste-indicator" class="paste-indicator hidden">
+                <span class="pulse"></span>
+                RichText 감지됨 - Markdown으로 변환 완료!
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Preview Section -->
+        <section id="preview-section" class="preview-section">
+          <div class="section-header">
+            <h2>
+              <span class="section-icon">📰</span>
+              미리보기
+            </h2>
+            <button id="refresh-preview-btn" class="btn btn-secondary">
+              <span class="btn-icon">🔄</span>
+              새로고침
+            </button>
+          </div>
+          <div class="preview-wrapper">
+            <div id="preview-content" class="preview-content">
+              <p class="preview-placeholder">Markdown을 입력하면 미리보기가 표시됩니다...</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Info Cards -->
+      <section class="info-section">
+        <div class="info-card">
+          <div class="info-icon">📋</div>
+          <h3>RichText 붙여넣기</h3>
+          <p>Google Docs, MS Word, 웹 페이지 등에서 복사한 서식 있는 텍스트를 붙여넣으면 자동으로 Markdown으로 변환됩니다.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">🇰🇷</div>
+          <h3>한국어 띄어쓰기 교정</h3>
+          <p><code>**텍스트(text)**의 경우</code> 패턴을 <code>**텍스트(text)** 의 경우</code>로 자동 교정하여 Markdown 렌더링 오류를 방지합니다.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">☁️</div>
+          <h3>GitHub 배포</h3>
+          <p>GitHub Pages를 통해 배포되며, 전세계 어디서나 빠른 응답 속도를 제공합니다.</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Made with 💜 for better Markdown experience</p>
+    </footer>
+  </div>
+
+  <!-- Turndown.js CDN -->
+  <script src="https://unpkg.com/turndown@7.2.0/dist/turndown.js"></script>
+  <script src="https://unpkg.com/@joplin/turndown-plugin-gfm@1.0.56/dist/turndown-plugin-gfm.js"></script>
+
+  <!-- Marked.js CDN for Preview -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+
+  <!-- App Scripts -->
+  <script type="module" src="index.js"></script>
+</body>
+
+</html>

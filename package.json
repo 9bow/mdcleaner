@@ -1,0 +1,26 @@
+{
+  "name": "mdcleaner",
+  "version": "1.0.0",
+  "description": "Markdown Cleaner WebApp - RichText to Markdown converter with Korean spacing fixes",
+  "type": "module",
+  "scripts": {
+    "dev": "vite src --port 3000",
+    "build": "vite build src --outDir ../dist --emptyOutDir",
+    "preview": "vite preview --outDir dist",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "markdown",
+    "sanitizer",
+    "richtext",
+    "github-pages",
+    "korean"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.4.0",
+    "vitest": "^2.1.8"
+  }
+}
